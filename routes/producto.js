@@ -41,6 +41,7 @@ router.post('/', (req, res) => {
   db.run(sql, params, function (err) {
     if (err) {
       res.status(400).json({ "error": err.message });
+      console.error('Error:', err);
       return;
     }
     res.json({
