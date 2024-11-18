@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const marcaRouter = require('./routes/marca');
 const usuarioRouter = require('./routes/usuario');
@@ -9,6 +10,7 @@ const loginRouter = require('./routes/login'); // Nueva línea
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 // Middleware de logging personalizado
 app.use((req, res, next) => {

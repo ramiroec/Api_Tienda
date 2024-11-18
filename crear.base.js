@@ -97,6 +97,65 @@ db.serialize(() => {
   });
 
   insertUser.finalize();
+
+  // Insertar una marca
+  const nombreMarca = 'Nike';
+  const insertMarca = db.prepare(`
+    INSERT INTO marca (nombre) VALUES (?)
+  `);
+
+  insertMarca.run(nombreMarca, (err) => {
+    if (err) {
+      console.error('Error al insertar la marca:', err.message);
+    } else {
+      console.log('Marca insertada exitosamente.');
+    }
+  });
+
+  insertMarca.finalize();
+
+  // Insertar un producto
+  const nombreProducto = 'Calzado Nike';
+  const precioProducto = 79.99;
+  const fotoProducto = 'https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/7c2d678c-7f10-40df-ba7d-0872137761c6/WMNS+ZOOM+FLY+5.png';
+  const disponibilidadProducto = 1;
+  const idMarcaProducto = 1; 
+
+  const insertProducto = db.prepare(`
+    INSERT INTO producto (nombre, precio, foto, disponibilidad, id_marca)
+    VALUES (?, ?, ?, ?, ?)
+  `);
+
+  insertProducto.run(nombreProducto, precioProducto, fotoProducto, disponibilidadProducto, idMarcaProducto, (err) => {
+    if (err) {
+      console.error('Error al insertar el producto:', err.message);
+    } else {
+      console.log('Producto insertado exitosamente.');
+    }
+  });
+
+  insertProducto.finalize();
+
+  // Insertar un cliente
+  const nombreCliente = 'Juan';
+  const apellidoCliente = 'Pérez';
+  const emailCliente = 'juan.perez@example.com';
+  const telefonoCliente = '123456789';
+
+  const insertCliente = db.prepare(`
+    INSERT INTO cliente (nombre, apellido, email, telefono)
+    VALUES (?, ?, ?, ?)
+  `);
+
+  insertCliente.run(nombreCliente, apellidoCliente, emailCliente, telefonoCliente, (err) => {
+    if (err) {
+      console.error('Error al insertar el cliente:', err.message);
+    } else {
+      console.log('Cliente insertado exitosamente.');
+    }
+  });
+
+  insertCliente.finalize();
 });
 
 // Cerrar la base de datos cuando termine el script
