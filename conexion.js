@@ -1,15 +1,11 @@
-const sqlite3 = require('sqlite3').verbose();
+// Importar better-sqlite3
+const Database = require('better-sqlite3');
 
 // Nombre del archivo de la base de datos
 const dbFile = 'tienda.sqlite';
 
 // Conexión a la base de datos SQLite
-const db = new sqlite3.Database(dbFile, (err) => {
-  if (err) {
-    console.error('Error al conectar a la base de datos:', err.message);
-  } else {
-    console.log('Conectado a la base de datos SQLite.');
-  }
-});
+const db = new Database(dbFile);
 
+// Exportar la base de datos
 module.exports = db;
