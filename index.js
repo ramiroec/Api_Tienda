@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const marcaRouter = require('./routes/marca');
-const usuarioRouter = require('./routes/usuario');
-const productoRouter = require('./routes/producto');
-const clienteRouter = require('./routes/cliente');
-const pedidoRouter = require('./routes/pedido');
-const loginRouter = require('./routes/login'); 
+const marcaRouter = require('./rutas/marca');
+const usuarioRouter = require('./rutas/usuario');
+const productoRouter = require('./rutas/producto');
+const clienteRouter = require('./rutas/cliente');
+const pedidoRouter = require('./rutas/pedido');
+const loginRouter = require('./rutas/login'); 
 
 const app = express();
 app.use(bodyParser.json());
