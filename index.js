@@ -12,23 +12,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// Middleware de logging personalizado
+// Mostrar información de cada solicitud en la consola
 app.use((req, res, next) => {
-  const start = process.hrtime();
   res.on('finish', () => {
-      const durationInMilliseconds = getDurationInMilliseconds(start);
-      console.log(`${req.method} ${req.originalUrl} ${res.statusCode} ${durationInMilliseconds.toLocaleString()} ms`);
+    console.log(`${req.method} ${req.originalUrl} ${res.statusCode}`);
   });
   next();
 });
-
-// Función para calcular la duración
-function getDurationInMilliseconds(start) {
-  const NS_PER_SEC = 1e9; // Convertir nanosegundos a segundos
-  const NS_TO_MS = 1e6; // Convertir nanosegundos a milisegundos
-  const diff = process.hrtime(start);
-  return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS;
-}
 
 // Rutas de la API
 app.use('/marca', marcaRouter);
@@ -36,7 +26,7 @@ app.use('/usuario', usuarioRouter);
 app.use('/producto', productoRouter);
 app.use('/cliente', clienteRouter);
 app.use('/pedido', pedidoRouter);
-app.use('/login', loginRouter); // Nueva línea
+app.use('/login', loginRouter);
 
 // Manejo de errores
 app.use((err, req, res, next) => {
