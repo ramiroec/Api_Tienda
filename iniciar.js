@@ -9,6 +9,7 @@ const pedidoRouter = require('./rutas/pedido');
 const loginRouter = require('./rutas/login'); 
 
 const app = express();
+const path = require('path');
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -32,6 +33,13 @@ app.use('/login', loginRouter);
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(500).json({ error: 'Error interno del servidor' });
+});
+
+ 
+// Tienda en HTML5
+app.get('/', (req, res) => {
+  console.log('Acceso a la tienda /');
+  res.sendFile(path.join(__dirname, 'tienda.html'));
 });
 
 // Iniciar el servidor
