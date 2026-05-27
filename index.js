@@ -30,8 +30,6 @@ function getDurationInMilliseconds(start) {
   return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS;
 }
 
-
-
 // Rutas de la API
 app.use('/marca', marcaRouter);
 app.use('/usuario', usuarioRouter);
