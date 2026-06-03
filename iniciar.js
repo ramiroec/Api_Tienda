@@ -45,7 +45,10 @@ app.get('/admin', (req, res) => {
   console.log('Acceso al administrdor /');
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
-
+app.get('/login', (req, res) => {
+  console.log('Acceso al login /login');
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
 
 // Iniciar el servidor
 const PORT = 3000;

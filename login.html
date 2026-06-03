@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Iniciar sesión</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .login-card {
+            background: white;
+            max-width: 400px;
+            width: 100%;
+            padding: 2rem;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 {
+            margin: 0 0 0.5rem 0;
+            color: #1e3c72;
+        }
+        p {
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 60px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        input:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42,82,152,0.2);
+        }
+        button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #1e3c72;
+        }
+        .mensaje {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .error {
+            background: #ffe0e0;
+            color: #c00;
+        }
+        .exito {
+            background: #e0ffe0;
+            color: #080;
+        }
+        footer {
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="login-card">
+    <h1>🔐 Acceso al sistema</h1>
+    <p>Ingresa tus credenciales</p>
+    <form id="loginForm">
+        <input type="text" id="nombre_usuario" placeholder="👤 Nombre de usuario" autocomplete="off" required>
+        <input type="password" id="contrasena" placeholder="🔒 Contraseña" required>
+        <button type="submit">📥 Iniciar sesión</button>
+    </form>
+    <div id="mensaje" class="mensaje"></div>
+    <footer>Tras el login exitoso serás redirigido a /admin</footer>
+</div>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const mensajeDiv = document.getElementById('mensaje');
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        mensajeDiv.innerHTML = '';
+        mensajeDiv.className = 'mensaje';
+
+        const nombre_usuario = document.getElementById('nombre_usuario').value.trim();
+        const contrasena = document.getElementById('contrasena').value;
+
+        if (!nombre_usuario || !contrasena) {
+            mostrarError('❌ Por favor, completa ambos campos.');
+            return;
+        }
+
+        const credenciales = { nombre_usuario, contrasena };
+
+        try {
+            const respuesta = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(credenciales)
+            });
+
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok) {
+                throw new Error(datos.error || 'Error al iniciar sesión');
+            }
+
+            // ✅ Éxito: mostramos mensaje y redirigimos a /admin
+            mostrarExito(`✅ ¡Bienvenido, ${datos.data.nombre_usuario}! Redirigiendo...`);
+            setTimeout(() => {
+                window.location.href = '/admin';
+            }, 1000); // Pequeña pausa para que el usuario vea el mensaje
+
+        } catch (error) {
+            mostrarError(`❌ ${error.message}`);
+        }
+    });
+
+    function mostrarError(texto) {
+        mensajeDiv.innerHTML = texto;
+        mensajeDiv.classList.add('error');
+        mensajeDiv.classList.remove('exito');
+    }
+
+    function mostrarExito(texto) {
+        mensajeDiv.innerHTML = texto;
+        mensajeDiv.classList.add('exito');
+        mensajeDiv.classList.remove('error');
+    }
+</script>
+</body>
+</html>
